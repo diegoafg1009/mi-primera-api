@@ -1,4 +1,4 @@
-﻿namespace ProyectoFinal
+﻿namespace ProyectoFinal.Repository
 {
     public abstract class DbHandler
     {

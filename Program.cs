@@ -1,24 +1,23 @@
-﻿namespace ProyectoFinal
+var builder = WebApplication.CreateBuilder(args);
+
+// Add services to the container.
+
+builder.Services.AddControllers();
+// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen();
+
+var app = builder.Build();
+
+// Configure the HTTP request pipeline.
+if (app.Environment.IsDevelopment())
 {
-    public class ProbarObjetos
-    {
-        static void Main(string[] args)
-        {
-
-            User user = new User();
-
-            user.UserName = "eperez";
-
-            user = UserHandler.GetUsuarios(user.UserName);
-
-            List<Product> products = new List<Product>();
-
-            products = ProductHandler.GetProducts(1);
-
-            ProductSoldHandler.GetProducts(1);
-
-            user = UserHandler.Login("eperez", "soyErnestoPerez");
-
-        }
-    }
+    app.UseSwagger();
+    app.UseSwaggerUI();
 }
+
+app.UseAuthorization();
+
+app.MapControllers();
+
+app.Run();
