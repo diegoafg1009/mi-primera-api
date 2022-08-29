@@ -6,6 +6,69 @@ namespace ProyectoFinal.Repository
 {
     public class UserHandler : DbHandler
     {
+        public static User GetUser(string userName)
+        {
+            User user = new User();
+            string querySelect = "SELECT * FROM Usuario WHERE NombreUsuario = @userName";
+            using (SqlConnection sqlConnection = new SqlConnection(ConnectionString))
+            {
+
+                using (SqlCommand sqlCommand = new SqlCommand(querySelect, sqlConnection))
+                {
+                    sqlConnection.Open();
+                    sqlCommand.Parameters.Add(new SqlParameter("userName", SqlDbType.VarChar) { Value = userName });
+
+                    using (SqlDataReader dataReader = sqlCommand.ExecuteReader())
+                    {
+                        if (dataReader.Read())
+                        {
+                            user.UserId = Convert.ToInt32(dataReader["Id"]);
+                            user.UserName = dataReader["NombreUsuario"].ToString();
+                            user.FirstName = dataReader["Nombre"].ToString();
+                            user.LastName = dataReader["Apellido"].ToString();
+                            user.Password = dataReader["Contraseña"].ToString();
+                            user.Email = dataReader["Mail"].ToString();
+                        }
+                    }
+
+                    sqlConnection.Close();
+                }
+            }
+
+            return user;
+        }
+
+        public static User Login(string userName, string pass)
+        {
+            User user = new User();
+            string querySelect = "SELECT * FROM Usuario WHERE NombreUsuario = @userName and Contraseña = @pass";
+            using (SqlConnection sqlConnection = new SqlConnection(ConnectionString))
+            {
+
+                using (SqlCommand sqlCommand = new SqlCommand(querySelect, sqlConnection))
+                {
+                    sqlConnection.Open();
+                    sqlCommand.Parameters.Add(new SqlParameter("userName", SqlDbType.VarChar) { Value = userName });
+                    sqlCommand.Parameters.Add(new SqlParameter("pass", SqlDbType.VarChar) { Value = pass });
+
+                    using (SqlDataReader dataReader = sqlCommand.ExecuteReader())
+                    {
+                        if (dataReader.Read())
+                        {
+                            user.UserId = Convert.ToInt32(dataReader["Id"]);
+                            user.UserName = dataReader["NombreUsuario"].ToString();
+                            user.FirstName = dataReader["Nombre"].ToString();
+                            user.LastName = dataReader["Apellido"].ToString();
+                            user.Password = dataReader["Contraseña"].ToString();
+                            user.Email = dataReader["Mail"].ToString();
+                        }
+                    }
+                    sqlConnection.Close();
+                }
+            }
+            return user;
+        }
+
         public static List<User> GetUsers()
         {
             List<User> users = new List<User>();

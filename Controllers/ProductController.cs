@@ -8,6 +8,13 @@ namespace ProyectoFinal.Controllers
     [Route("[controller]")]
     public class ProductController
     {
+        [HttpGet]
+
+        public List<Product> GetProducts([FromBody] int id)
+        {
+            return ProductHandler.GetProducts(id);
+        }
+
         [HttpPost]
         public void InsertProduct([FromBody] Product product)
         {

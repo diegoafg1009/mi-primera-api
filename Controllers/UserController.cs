@@ -8,7 +8,13 @@ namespace ProyectoFinal.Controllers
     [Route("[controller]")]
     public class UserController : ControllerBase
     {
-        [HttpGet(Name = "GetUsers")]
+        [HttpGet("GetUser")]
+        public User GetUser([FromBody] string userName)
+        {
+            return UserHandler.GetUser(userName);
+        }
+
+        [HttpGet("GetUsers")]
         public List<User> GetUsers()
         {
             return UserHandler.GetUsers();
@@ -33,6 +39,13 @@ namespace ProyectoFinal.Controllers
         public void DeleteUser([FromBody] int id)
         {
             UserHandler.DeleteUser(id);
+        }
+
+        [HttpGet("Login")]
+
+        public User Login([FromBody] string userName, string pass)
+        {
+            return UserHandler.Login(userName, pass);
         }
 
     }

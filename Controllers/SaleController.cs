@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using ProyectoFinal.Controllers.DTOS;
 using ProyectoFinal.Model;
 using ProyectoFinal.Repository;
 
@@ -8,14 +9,23 @@ namespace ProyectoFinal.Controllers
     [Route("[controller]")]
     public class SaleController
     {
-        [HttpPost]
-        public void InsertSale( List <Product> products, int userId)
-        {
-            SaleHandler.InsertSale(products, userId);
+        [HttpGet]
 
-            foreach(Product product in products)
+        public List<Sale> GetSales([FromBody] int userId)
+        {
+            return SaleHandler.GetSales(userId);
+        }
+
+        [HttpPost]
+        public void InsertSale([FromBody]  List<PostSale> postSales, int userId)
+        {
+            int saleId = 0;
+            SaleHandler.InsertSale(userId, ref saleId);
+
+            foreach(PostSale postSale in postSales)
             {
-                ProductHandler.InsertProduct(product);
+                ProductSoldHandler.InsertProductSold(postSale.Stock, postSale.productId, saleId);
+                ProductHandler.UpdateStock(postSale.productId, postSale.Stock);
             }
         }
     }
